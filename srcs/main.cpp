@@ -1,11 +1,10 @@
-#include "includes/main.hpp"
+#include "../includes/main.hpp"
 
 int main(int args, char **argv){
-    std::vector<t_server> servers;
+    int fd_server
 
     if(args != 2){
         std::cout << "Bad arguments\n";
         return (1);
     }
-//    parser(argv[1], servers);
 }
