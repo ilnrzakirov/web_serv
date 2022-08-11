@@ -4,6 +4,7 @@
 #include <vector
 #include <map>
 #include <string>
+#include <netinet/in.h>
 
 
 typedef struct	s_server {

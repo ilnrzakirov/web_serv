@@ -7,6 +7,5 @@ int main(int args, char **argv){
         std::cout << "Bad arguments\n";
         return (1);
     }
-    parser(argv[1], servers);
-
+//    parser(argv[1], servers);
 }
