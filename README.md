@@ -1,6 +1,7 @@
 # web_serv
 
 <br> Team page: (https://github.com/LeysanRyazyapova) </br>
+<br> Team page: (https://github.com/r4z00m) </br>
 
 Ссылки для изучение:
 
