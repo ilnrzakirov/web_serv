@@ -7,6 +7,8 @@
 #include <netinet/in.h>
 
 
+#define PORT 8080
+
 typedef struct	s_server {
     std::string								name;
     std::string								host;
