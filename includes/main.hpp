@@ -13,11 +13,12 @@
 
 #define PORT 8080
 
-typedef struct	s_server {
-    std::string								name;
-    std::string								host;
-    int										port;
-    std::string 							logFile;
-    std::map<int, std::string>				errorPages;
-//    std::multimap<std::string, Location>	locations;
-}	t_server;
+namespace std
+
+class Request {
+public:
+    string method;
+    string hostname;
+    int port;
+    string body;
+};
