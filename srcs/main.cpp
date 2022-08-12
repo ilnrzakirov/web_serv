@@ -35,6 +35,7 @@ int main(int args, char **argv){
             exit(EXIT_FAILURE);
         }
         char buf[2048] = {0};
+
         long count = read(fd, buf, 2048);
         std::cout << buf << std::endl;
         close(fd);
