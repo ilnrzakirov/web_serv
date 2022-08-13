@@ -1,6 +1,6 @@
-#include "../includes/main.hpp"
 #include "../includes/Logger.hpp"
-
+#include "../includes/main.hpp"
+#include "config_parser.cpp"
 int main(int args, char **argv){
     Logger logger(1, "log.txt");
     int fd_server;
@@ -10,6 +10,8 @@ int main(int args, char **argv){
         std::cerr << "Bad arguments\n";
         return (1);
     }
+
+    config_parser(argv[1]);
 
     if ((fd_server = socket(AF_INET, SOCK_STREAM, 0)) == 0){
         logger.logging(1, "Socket error");
