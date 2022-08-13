@@ -9,11 +9,12 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <stdio.h>
-#include <list>
+#include <cstring>
+#include "../srcs/config_parser.cpp"
 
 #define PORT 8080
 
-namespace std
+using namespace std;
 
 class Request {
 public:

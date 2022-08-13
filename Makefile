@@ -30,9 +30,9 @@ bonus	:	$(OBJSB) $(HEADER)
 	$(CC) $(CFLAGS) $(INC) $(OBJSB) -o $(NAME)
 
 clean	:
-	@rm -f $(OBJS) $(OBJSB)
+	rm -f $(OBJS) $(OBJSB)
 
 fclean	:	clean
-	@$(RM) $(NAME)
+	rm -f $(NAME)
 
 re		:	fclean all
