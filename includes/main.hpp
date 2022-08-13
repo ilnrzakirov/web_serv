@@ -9,11 +9,10 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <stdio.h>
-#include <list>
 
 #define PORT 8080
 
-namespace std
+using namespace std;
 
 class Request {
 public:

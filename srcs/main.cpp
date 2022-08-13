@@ -1,6 +1,8 @@
 #include "../includes/main.hpp"
+#include "../includes/Logger.hpp"
 
 int main(int args, char **argv){
+    Logger logger(1, "log.txt");
     int fd_server;
     struct sockaddr_in address;
 
@@ -10,7 +12,7 @@ int main(int args, char **argv){
     }
 
     if ((fd_server = socket(AF_INET, SOCK_STREAM, 0)) == 0){
-        std::cerr << "Socket error\n";
+        logger.logging(1, "Socket error");
         exit(EXIT_FAILURE);
     }
     address.sin_family = AF_INET;
