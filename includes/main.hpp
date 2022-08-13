@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <stdio.h>
 #include <cstring>
+#include "../srcs/config_parser.cpp"
 
 #define PORT 8080
 
