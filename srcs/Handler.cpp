@@ -22,3 +22,16 @@ void Handler::init() {
         FD_SET((*servers)[i].fd, &this->reed_fds);
     }
 }
+
+void Handler::run_server() {
+    char    buf[2048];
+    int     bytes;
+    struct  timval tv;
+
+    while(true){
+        this->copy_read_fds = this->reed_fds;
+        this->copy_write_fds = this->write_fds;
+        select(FD_SETSIZE, &copy_read_fds, &copy_write_fds, 0, 0);
+//        Нужны классы клиентов и сервера
+    }
+}
