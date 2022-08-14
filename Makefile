@@ -1,6 +1,6 @@
 NAME	=	webserv
 
-SRCS	=	srcs/main.cpp
+SRCS	=	srcs/main.cpp srcs/Logger.cpp
 
 SRCS_B	= 	\
 
