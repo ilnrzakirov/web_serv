@@ -13,7 +13,7 @@ int main(int args, char **argv){
     }
 
 //    config_parser(argv[1]);
-    logger.logging(1, "create server socket");
+    logger.logging(1, "Create server socket");
     if ((fd_server = socket(AF_INET, SOCK_STREAM, 0)) == 0){
         logger.logging(4, "Socket error");
         exit(EXIT_FAILURE);
@@ -23,12 +23,12 @@ int main(int args, char **argv){
     address.sin_port = htons(PORT);
     memset(address.sin_zero, '\0', sizeof address.sin_zero);
 
-    logger.logging(1, "bind server socket");
+    logger.logging(1, "Bind server socket");
     if (bind(fd_server, (struct sockaddr *)&address, sizeof(address))< 0){
         logger.logging(4, "Error when assigning an address");
         exit(EXIT_FAILURE);
     }
-    logger.logging(1, "listen socket");
+    logger.logging(1, "Listen socket");
     if (listen(fd_server, 20) < 0){
         logger.logging(4, "Listen error");
         exit(EXIT_FAILURE);
@@ -42,7 +42,7 @@ int main(int args, char **argv){
             logger.logging(4, "Accept failure");
             exit(EXIT_FAILURE);
         }
-        logger.logging(1, "read request");
+        logger.logging(1, "Read request");
         char buf[2048] = {0};
 
         long count = read(fd, buf, 2048);
