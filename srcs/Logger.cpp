@@ -18,12 +18,13 @@ void Logger::logging(int level, std::string msg) {
     struct tm * timeinfo;
     time (&rawtime);
     timeinfo = localtime ( &rawtime );
-    if (level >= this->level) {
-        std::cerr << msg << std::endl;
-    }
-    std::ofstream log;
-    log.open(filename, ios_base::app);
     std::string date_time = asctime(timeinfo);
     std::replace(date_time.begin(), date_time.end(), '\n', ' ');
-    log << date_time  << " - " << this->LogLevelNames[level -1] << ": " <<  msg << std::endl;
+    if (level >= this->level) {
+        std::cerr << date_time << " - " << this->LogLevelNames[level - 1] << ": " << msg << std::endl;
+        std::ofstream log;
+        log.open(filename, ios_base::app);
+        log << date_time << " - " << this->LogLevelNames[level - 1] << ": " << msg << std::endl;
+        log.close();
+    }
 }
