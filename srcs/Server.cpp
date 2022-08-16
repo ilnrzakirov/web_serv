@@ -3,3 +3,37 @@
 //
 
 #include "../includes/Server.hpp"
+
+Server::Server() {
+    this->fd = -1;
+    this->autoIndex = false;
+}
+
+Server::~Server() {}
+
+bool &Server::getAutoIndex() {
+    return this->autoIndex;
+}
+
+int &Server::getFd() {
+    return this->fd;
+}
+
+std::vector<Locations> &Server::getLocations() {
+    return this->locations;
+}
+
+std::map<std::string, std::string> &Server::getParams() {
+    return this->params;
+}
+
+void Server::init() {
+    int port = std::stoi(((*(params.find("listen"))).second)); //если параметры будут записывать в мап
+    addr.sin_port = htons(port);
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    fd = socket(AF_INET, SOCK_STREAM, 0);
+    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int));
+    bind(fd, (struct sockaddr*) &(addr), sizeof(addr));
+    listen(fd, 2000);
+}
