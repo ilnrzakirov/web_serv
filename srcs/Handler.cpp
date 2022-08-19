@@ -20,14 +20,14 @@ void Handler::init() {
     for (size_t i=0; i < servers->size(); i++){
 //        Здесь инициализация сервера
         (*servers)[i].init();
-        FD_SET((*servers)[i].fd, &this->reed_fds);
+        FD_SET((*servers)[i].getFd(), &this->reed_fds);
     }
 }
 
 void Handler::run_server() {
     Logger logger(1, "log.txt");
     char    buf[2048];
-    int     bytes;
+    int     bytes, server_count;
     struct  timval tv;
 
     while(true){
@@ -51,7 +51,7 @@ void Handler::run_server() {
                 if ((bytes = recv((*it)->getFD(), buf, 2048, 0)) > 0 ){ // читаем с сокета (если что то прочли то: )
                     std::string fd_string = std::to_string((*it)->getFD());
                     std::string read_byte = std::to_string(bytes);
-                    logger.logging(1, ("read fd" + fd_string + " total: " + read_byte + "bytes"))
+                    logger.logging(1, ("read fd" + fd_string + " total: " + read_byte + "bytes"));
                     buf[bytes] = 0; // ставим конец строки
                     (*it)->request += buf; // добавляем то что прочли к нашему реквесту
                     memset(buf, 0, 2048); // повторно заполняем нулями
@@ -59,8 +59,8 @@ void Handler::run_server() {
                     FD_CLR((*it)->getFD(), &this->reed_fds);
                     FD_CLR((*it)->getFD(), &this->write_fds);
                     delete *it;
-                    clients.erase(it);
-                    logger.logging(3, "Client disconnected")
+                    this->clients.erase(it);
+                    logger.logging(3, "Client disconnected");
                     break;
                 }
             }

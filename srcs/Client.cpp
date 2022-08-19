@@ -25,7 +25,7 @@ int Client::getFD() {
 void Client::acceptClient() {
     int		socklen = sizeof(sockaddr_in);
 
-    fd = accept(serverFD, (struct sockaddr*)&client, (socklen_t*)&socklen);
+    fd = accept(this->server_fd, (struct sockaddr*)&client, (socklen_t*)&socklen);
     fcntl(fd, F_SETFL, O_NONBLOCK);
     ip = inet_ntoa(client.sin_addr);
 }
