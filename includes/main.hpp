@@ -11,6 +11,13 @@
 #include <stdio.h>
 #include <cstring>
 #include <fstream>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <cstdlib>
+#include <dirent.h>
+#include <arpa/inet.h>
+#include <ctime>
+#include <fcntl.h>
 //#include "../srcs/config_parser.cpp"
 
 #define PORT 8080
