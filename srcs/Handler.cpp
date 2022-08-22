@@ -91,6 +91,9 @@ void Handler::run_server() {
                 }
                 else
                     break ;
+                Request request((*it)->request); // инициализация рекваста (передаем то что получили с сокета)
+                logger.logging(1, "Received request from " + std::to_string((*it)->getFD()))
+
             }
         }
     }
