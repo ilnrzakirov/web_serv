@@ -56,13 +56,41 @@ void Handler::run_server() {
                     (*it)->request += buf; // добавляем то что прочли к нашему реквесту
                     memset(buf, 0, 2048); // повторно заполняем нулями
                 } else if (bytes == 0) { // если ничего не прочли с сокета то:
-                    FD_CLR((*it)->getFD(), &this->reed_fds);
-                    FD_CLR((*it)->getFD(), &this->write_fds);
-                    delete *it;
-                    this->clients.erase(it);
+                    FD_CLR((*it)->getFD(), &this->reed_fds); // удаляем дискритор из списка дискрипторов чтения
+                    FD_CLR((*it)->getFD(), &this->write_fds); // удаляем дискриптори из списка записи
+                    delete *it; // удаляем клиента
+                    this->clients.erase(it); // удаляем клиента с вектора
                     logger.logging(3, "Client disconnected");
                     break;
                 }
+                std::size_t s = 0;
+                is_browser = false;
+                if ((s = (*it)->request.find("\r\n\r\n")) != std::string::npos){ // ищем в реквесте конец
+                    std::size_t body = 0;
+                    if ((body = (*it)->request.find("Content-Length")) != std::string::npos) // ищем в рекввесте длину контента
+                    {
+                        is_browser = true;
+                        body = strtoul((*it)->request.substr(body + 15, (*it)->request.find("\r\n", body) - body).c_str(), 0, 0);
+
+                    }
+                    if (((*it)->request.substr(0, 5).find("PUT") != std::string::npos ||
+                         (*it)->request.substr(0, 5).find("POST") != std::string::npos) ) // проверяем что запросы не пост и не гет
+                    {
+                        if ((is_browser && ((*it)->request.substr(s + 4).size() >= body)) || ((*it)->request.substr(s + 4).find("\r\n\r\n") != std::string::npos))
+                        {
+                            FD_SET((*it)->getFD(), &this->write_fds); // удаляем дискриторы
+                            FD_CLR((*it)->getFD(), &this->reed_fds);
+                        }
+                        else
+                            break;
+                    }
+                    else {
+                        FD_SET((*it)->getFD(), &this->write_fds);
+                        FD_CLR((*it)->getFD(), &this->reed_fds);
+                    }
+                }
+                else
+                    break ;
             }
         }
     }
