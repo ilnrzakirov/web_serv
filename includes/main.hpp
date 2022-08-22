@@ -24,10 +24,3 @@
 
 using namespace std;
 
-class Request {
-public:
-    string method;
-    string hostname;
-    int port;
-    string body;
-};
