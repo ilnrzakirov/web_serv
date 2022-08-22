@@ -1,14 +1,20 @@
 //
 // Created by Toad Miranda on 8/13/22.
 //
-
-#ifndef WEBSERV_LOCATION_HPP
-#define WEBSERV_LOCATION_HPP
+#pragma once
+#include "main.hpp"
 
 
 class Location {
-
+private:
+    std::string path;
+    bool autoidx;
+    std::map<std::string, std::string> locations;
+public:
+    Locations();
+    ~Locations();
+    std::map<std::string, std::string>&	get_locations(void);
+    std::string& get_path(void);
+    bool& get_autoindex(void);
 };
 
-
-#endif //WEBSERV_LOCATION_HPP
