@@ -28,7 +28,8 @@ void Handler::run_server() {
     Logger logger(1, "log.txt");
     char    buf[2048];
     int     bytes, server_count;
-    struct  timval tv;
+    struct  timeval tv;
+    bool    is_browser;
 
     while(true){
         this->copy_read_fds = this->reed_fds;

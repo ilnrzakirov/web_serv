@@ -1,6 +1,6 @@
 #include "../includes/Logger.hpp"
 #include "../includes/main.hpp"
-//#include "config_parser.cpp"
+#include "config_parser.cpp"
 //int main(int args, char **argv){
 //    Logger logger(1, "log.txt");
 //    int fd_server;
@@ -59,5 +59,6 @@ int main(int argc, char **argv){
         logger.logging(4, "Bad arguments");
         return (1);
     }
+    config_parser(argv[1]);
 
 }

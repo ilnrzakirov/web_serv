@@ -4,6 +4,7 @@
 
 #include "../includes/Logger.hpp"
 #include <time.h>
+#include <algorithm>
 
 
 Logger::~Logger() {}
