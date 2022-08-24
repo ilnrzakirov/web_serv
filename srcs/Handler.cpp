@@ -4,6 +4,8 @@
 
 #include "../includes/Handler.hpp"
 #include "../includes/Logger.hpp"
+#include "../includes/Request.hpp"
+#include "../includes/Response.hpp"
 
 
 Handler::Handler(std::vector<Server>* servers) {
@@ -92,9 +94,12 @@ void Handler::run_server() {
                 else
                     break ;
                 Request request((*it)->request); // инициализация рекваста (передаем то что получили с сокета)
-                logger.logging(1, "Received request from " + std::to_string((*it)->getFD()))
-
+                logger.logging(1, "Received request from " + std::to_string((*it)->getFD()));
+                Response response(request.getHeader(), (*servers)[server_count], *it); // инициализация респонса (передаем мап хедеров)
+                (*it)->getResponse() = response.get_response(); // внутри класса респонс пока что ничего не реализовано
+                (*it)->request.clear(); // очищяем реквест
             }
+
         }
     }
 }
