@@ -100,6 +100,28 @@ void Handler::run_server() {
                 (*it)->request.clear(); // очищяем реквест
             }
 
+            if (FD_ISSET((*it)->getFD(), &this->copy_write_fds)){
+                int ret = send((*it)->getFD(), (*it)->getMsg().c_str(), (*it)->getResponse().size(), 0); // отсылаем респонс
+                if (ret <= 0){ //удаляем дискриптор с векторов чтения и записи в случаи если отослать не смогли
+                    FD_CLR((*it)->getFD(), &this->reed_fds);
+                    FD_CLR((*it)->getFD(), &this->write_fds);
+                    delete *it;
+                    clients.erase(it);
+                    logger.logging(4, "Client disconnected, write fail")
+                    break;
+                }
+                if ((unsigned long)ret < (*it)->getResponse().length()) // если отправили меньше чем длина респонса, то респонс срезаем
+                    (*it)->getResponse() = (*it)->getResponse().substr(ret);
+                else{
+                    FD_CLR((*it)->getFD(), &this->write_fds); // если отправили длину респонса то
+                    (*it)->getResponse().clear(); // очищяем респонс и удаляем клиента
+                    delete *it;
+                    clients.erase(it);
+                    logger.logging(2, "Client disconnected")
+                    break;
+                }
+            }
+
         }
     }
 }
