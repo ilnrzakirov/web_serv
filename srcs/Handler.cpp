@@ -107,7 +107,7 @@ void Handler::run_server() {
                     FD_CLR((*it)->getFD(), &this->write_fds);
                     delete *it;
                     clients.erase(it);
-                    logger.logging(4, "Client disconnected, write fail")
+                    logger.logging(4, "Client disconnected, write fail");
                     break;
                 }
                 if ((unsigned long)ret < (*it)->getResponse().length()) // если отправили меньше чем длина респонса, то респонс срезаем
@@ -117,11 +117,21 @@ void Handler::run_server() {
                     (*it)->getResponse().clear(); // очищяем респонс и удаляем клиента
                     delete *it;
                     clients.erase(it);
-                    logger.logging(2, "Client disconnected")
+                    logger.logging(2, "Client disconnected");
                     break;
                 }
             }
-
+            memset(&tv, 0, sizeof(tv)); // стираем запись времени
+            gettimeofday(&tv, 0); // заново берем время
+            if ((FD_ISSET((*it)->getFD(), &this->copy_read_fds)) && (*it)->getTime() - tv.tv_sec > 10) // time out
+            {
+                FD_CLR((*it)->getFD(), &this->reed_fds); // удаляем клиента с массива дискриптеров для чтения
+                FD_CLR((*it)->getFD(), &this->write_fds); // удаляем клиента с массива дискриптеров для записи
+                delete *it; // удаляем клиента
+                clients.erase(it); // удаляем клиента с вектора клиентов
+                logger.logging(2, "Client disconnected");
+                break;
+            }
         }
     }
 }
