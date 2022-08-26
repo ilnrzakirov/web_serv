@@ -8,16 +8,16 @@
 
 Response::Response(std::map<std::string, std::string> header, Server& server, Client* client) : header(header), server(server), client(client)
 {
-    error_page = "";
+    this->error = "";
     if (server.getParams().find("error_page") != server.getParams().end())
-        error_page = server.getParams().find("error_page")->second;
+        this->error = server.getParams().find("error_page")->second;
     this->build_response();
 }
 
 Response::~Response() {}
 
 
-std::string Response::getResponse(void) {
+std::string Response::get_response(void) {
     return this->response;
 }
 

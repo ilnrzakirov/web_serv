@@ -23,12 +23,12 @@ public:
     Response(std::map<std::string, std::string> header, Server& server, Client* client);
     ~Response();
     void							build_response(void);
-    std::pair<std::string, bool>	is_location(std::vector<Locations>& locations, std::string check);
-    std::pair<std::string, bool>	is_index(std::vector<Locations>& locations, std::string check);
-    bool							is_autoindex(std::vector<Locations>& locations, std::string check);
-    std::pair<std::string, bool>	is_bodySize(std::vector<Locations>& locations, std::string check);
-    std::pair<std::string, bool>	is_method(std::vector<Locations>& locations, std::string check);
-    std::pair<std::string, bool>    is_CGI(std::vector<Locations>& locations, std::string check, std::string tmpURI);
+    std::pair<std::string, bool>	is_location(std::vector<Location>& locations, std::string check);
+    std::pair<std::string, bool>	is_index(std::vector<Location>& locations, std::string check);
+    bool							is_autoindex(std::vector<Location>& locations, std::string check);
+    std::pair<std::string, bool>	is_bodySize(std::vector<Location>& locations, std::string check);
+    std::pair<std::string, bool>	is_method(std::vector<Location>& locations, std::string check);
+    std::pair<std::string, bool>    is_CGI(std::vector<Location>& locations, std::string check, std::string tmpURI);
     std::string						get_response(void);
     void							method_head();
     void							method_get();
