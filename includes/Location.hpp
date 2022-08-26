@@ -11,8 +11,8 @@ private:
     bool autoidx;
     std::map<std::string, std::string> locations;
 public:
-    Locations();
-    ~Locations();
+    Location();
+    ~Location();
     std::map<std::string, std::string>&	get_locations(void);
     std::string& get_path(void);
     bool& get_autoindex(void);

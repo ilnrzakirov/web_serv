@@ -11,6 +11,7 @@ Request::Request(std::string request) {
     std::size_t next_separator = request.find(" ", separtor); // берем второй сепаратор
     header.insert(std::pair<std::string, std::string>("uri", request.substr(separtor + 1, next_separator - separtor - 1))); // записываем индентификатор
 
+    std::string value;
     if ((separtor = request.find("Content-Length")) != std::string::npos) // находим длину контента
     {
         separtor += 15;

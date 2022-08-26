@@ -6,7 +6,8 @@
 #include "../includes/Logger.hpp"
 #include "../includes/Request.hpp"
 #include "../includes/Response.hpp"
-
+#include "../includes/Server.hpp"
+#include "../includes/Client.hpp"
 
 Handler::Handler(std::vector<Server>* servers) {
     this->servers = servers;
@@ -30,7 +31,7 @@ void Handler::run_server() {
     Logger logger(1, "log.txt");
     char    buf[2048];
     int     bytes, server_count;
-    struct  timval tv;
+    struct  timeval tv;
 
     while(true){
         this->copy_read_fds = this->reed_fds;
@@ -66,7 +67,7 @@ void Handler::run_server() {
                     break;
                 }
                 std::size_t s = 0;
-                is_browser = false;
+                bool is_browser = false;
                 if ((s = (*it)->request.find("\r\n\r\n")) != std::string::npos){ // ищем в реквесте конец
                     std::size_t body = 0;
                     if ((body = (*it)->request.find("Content-Length")) != std::string::npos) // ищем в рекввесте длину контента
@@ -101,7 +102,7 @@ void Handler::run_server() {
             }
 
             if (FD_ISSET((*it)->getFD(), &this->copy_write_fds)){
-                int ret = send((*it)->getFD(), (*it)->getMsg().c_str(), (*it)->getResponse().size(), 0); // отсылаем респонс
+                int ret = send((*it)->getFD(), (*it)->getResponse().c_str(), (*it)->getResponse().size(), 0); // отсылаем респонс
                 if (ret <= 0){ //удаляем дискриптор с векторов чтения и записи в случаи если отослать не смогли
                     FD_CLR((*it)->getFD(), &this->reed_fds);
                     FD_CLR((*it)->getFD(), &this->write_fds);
