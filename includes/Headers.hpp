@@ -4,6 +4,7 @@
 
 #ifndef WEBSERV_HEADERS_HPP
 #define WEBSERV_HEADERS_HPP
+#include <algorithm>
 
 
 class Headers {
@@ -83,7 +84,8 @@ public:
             if (header.find("body") != header.end())
             {
                 headers_cgi["QUERY_STRING"] = header.find("body")->second;
-//                headers_cgi["QUERY_STRING"].erase(std::remove_if(headers_cgi["QUERY_STRING"].begin(), headers_cgi["QUERY_STRING"].end(), [](int c){return (isspace(c) || isdigit(c) || c == 'a');}), headers_cgi["QUERY_STRING"].end() );
+//                headers_cgi["QUERY_STRING"].erase(std::remove_if(headers_cgi["QUERY_STRING"].begin(), headers_cgi["QUERY_STRING"].end(), [](int c){
+//                    return (isspace(c) || isdigit(c) || c == 'a');}), headers_cgi["QUERY_STRING"].end());
                 headers_cgi["CONTENT_LENGTH"] = std::to_string(headers_cgi["QUERY_STRING"].size());
             }
             else
