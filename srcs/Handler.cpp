@@ -29,7 +29,7 @@ void Handler::init() {
 
 void Handler::run_server() {
     Logger logger(1, "log.txt");
-    char    buf[2048];
+    char    *buf = (char*)malloc(100000001);;
     int     bytes, server_count;
     struct  timeval tv;
 
@@ -104,6 +104,7 @@ void Handler::run_server() {
 
             if (FD_ISSET((*it)->getFD(), &this->copy_write_fds)){
                 int ret = send((*it)->getFD(), (*it)->getResponse().c_str(), (*it)->getResponse().size(), 0); // отсылаем респонс
+                logger.logging(1, "response text: " + (*it)->getResponse());
                 if (ret <= 0){ //удаляем дискриптор с векторов чтения и записи в случаи если отослать не смогли
                     FD_CLR((*it)->getFD(), &this->reed_fds);
                     FD_CLR((*it)->getFD(), &this->write_fds);
@@ -121,7 +122,7 @@ void Handler::run_server() {
                     (*it)->getResponse().clear(); // очищяем респонс и удаляем клиента
                     delete *it;
                     clients.erase(it);
-                    logger.logging(2, "Client disconnected {length}");
+                    logger.logging(2, "Client disconnected {send completed}");
                     break;
                 }
             }
