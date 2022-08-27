@@ -10,13 +10,12 @@ Request::Request(std::string request) {
     Logger logger(1, "log.txt");
     logger.logging(2, "Start pars request");
     std::size_t separtor = request.find(" "); // находим первый сепаратор (пробел)
-    this->header.insert(std::pair<std::string, std::string>("method",request.substr(0, separtor))); // берем метод и записываем в мап
-    std::size_t next_separator = request.find(" ", separtor); // берем второй сепаратор
+    this->header.insert(std::pair<std::string, std::string>("method",(request.substr(0, separtor)))); // берем метод и записываем в мап
+    std::size_t next_separator = request.find(" ", separtor + 1); // берем второй сепаратор
     header.insert(std::pair<std::string, std::string>("uri", request.substr(separtor + 1, next_separator - separtor - 1))); // записываем индентификатор
 
     std::string value;
-    if ((separtor = request.find("Content-Length")) != std::string::npos) // находим длину контента
-    {
+    if ((separtor = request.find("Content-Length")) != std::string::npos){ // находим длину контента
         separtor += 15;
         if ((next_separator = request.find("\r\n", separtor)) != std::string::npos)
             value = request.substr(separtor, next_separator - separtor);
