@@ -276,7 +276,7 @@ void		Response::method_get(){
             }
         }
         else{
-            if (autoidx == true){
+            if (autoidx){
                 body = autoindexGenerator(uri, this->header.find("uri")->second);
                 Headers rsp_header;
                 rsp_header.headersHTTP("200 OK", body.size(), uri, 0);
