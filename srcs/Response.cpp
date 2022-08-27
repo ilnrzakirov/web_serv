@@ -110,11 +110,13 @@ void    Response::build_response(void){ // собираем ответ
     std::pair<std::string, bool> method_allowed = is_method(this->server.getLocations(), this->header.find("uri")->second);
     this->autoidx = is_autoindex(this->server.getLocations(), this->header.find("uri")->second);
 
-    logger.logging(1, to_string(check.second));
+    logger.logging(1, "URI in header check: "+ to_string(check.second));
     if (!check.second)
         uri = tmp.replace(0, 1, this->server.getParams().find("root")->second);
-    else
+    else {
         uri = check.first;
+        logger.logging(1, "URI init " + check.first);
+    }
 
     if (this->header.find("method") != header.end() )
         method = this->header.find("method")->second;
@@ -206,10 +208,8 @@ void		Response::method_get(){
     }
     status = lstat(uri.c_str(), &buffer);
     logger.logging(1, "Read " + uri);
-    if (status == -1) {
-        logger.logging(3, "[GET] Read uri status: " + to_string(status));
-    }
     if (status == -1){
+        logger.logging(3, "[GET] Read uri status: " + to_string(status));
         body = errorPage("404", "Page Not Found", this->error);
         logger.logging(1, "body 404: " + body);
         Headers rsp_header;
@@ -231,6 +231,7 @@ void		Response::method_get(){
         close(fd);
         this->response += body;
         if (fd == -1 || bytes == -1){
+            logger.logging(2, "page not found, fd=" + to_string(fd) + " bytes=" + to_string(bytes));
             body = errorPage("404", "Page Not Found", this->error);
             Headers rsp_header;
             rsp_header.headersHTTP("404 Not Found", body.size(), uri, 0);
@@ -241,7 +242,7 @@ void		Response::method_get(){
     else if ((buffer.st_mode & S_IFMT) == S_IFDIR){
         std::pair<std::string, bool> check = this->is_index(this->server.getLocations(), this->header.find("uri")->second);
 
-        if ( check.second == true ){
+        if (!check.second ){
             uri += "/" + check.first;
             if ( !(status = lstat(uri.c_str(), &buffer)) ){
                 int fd = open(uri.c_str(), O_RDONLY);
@@ -257,6 +258,7 @@ void		Response::method_get(){
                 close(fd);
                 this->response += body;
                 if (fd == -1 || bytes == -1){
+                    logger.logging(2, "page not found, fd=" + to_string(fd) + " bytes=" + to_string(bytes));
                     body = errorPage("404", "Page Not Found", this->error);
                     Headers rsp_header;
                     rsp_header.headersHTTP("404 Not Found", body.size(), uri, 0);
@@ -265,6 +267,7 @@ void		Response::method_get(){
                 }
             }
             else{
+                logger.logging(2, "page not found, check.second false");
                 body = errorPage("404", "Page Not Found", this->error);
                 Headers rsp_header;
                 rsp_header.headersHTTP("404 Not Found", body.size(), uri, 0);
