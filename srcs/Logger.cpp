@@ -11,6 +11,11 @@ Logger::~Logger() {}
 Logger::Logger(int level, std::string filename) {
     this->level = level;
     this->filename = filename;
+    this->LogLevelNames[0] = "INFO";
+    this->LogLevelNames[1] = "DEBUG";
+    this->LogLevelNames[2] = "WARNING";
+    this->LogLevelNames[3] = "ERROR";
+
 }
 
 void Logger::logging(int level, std::string msg) {

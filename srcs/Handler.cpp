@@ -118,7 +118,7 @@ void Handler::run_server() {
                     (*it)->getResponse().clear(); // очищяем респонс и удаляем клиента
                     delete *it;
                     clients.erase(it);
-                    logger.logging(2, "Client disconnected");
+                    logger.logging(2, "Client disconnected {length}");
                     break;
                 }
             }
@@ -130,7 +130,7 @@ void Handler::run_server() {
                 FD_CLR((*it)->getFD(), &this->write_fds); // удаляем клиента с массива дискриптеров для записи
                 delete *it; // удаляем клиента
                 clients.erase(it); // удаляем клиента с вектора клиентов
-                logger.logging(2, "Client disconnected");
+                logger.logging(2, "Client disconnected {time}");
                 break;
             }
         }

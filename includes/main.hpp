@@ -18,7 +18,7 @@
 #include <arpa/inet.h>
 #include <ctime>
 #include <fcntl.h>
-//#include "../srcs/config_parser.cpp"
+#include "Config.hpp"
 
 #define PORT 8080
 

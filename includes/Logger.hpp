@@ -9,7 +9,7 @@ class Logger {
 private:
     int level;
     std::string filename;
-    std::string LogLevelNames[4] = {"INFO", "DEBUG", "WARNING", "ERROR"};
+    std::string LogLevelNames[4];
     Logger();
 public:
     Logger(int level, std::string filename);

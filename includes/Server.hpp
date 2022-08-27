@@ -7,6 +7,8 @@
 #include "Location.hpp"
 #include "main.hpp"
 
+class Location;
+
 class Server {
 private:
     int fd;
