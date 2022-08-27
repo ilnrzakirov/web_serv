@@ -3,9 +3,12 @@
 //
 
 #include "../includes/Request.hpp"
+#include "../includes/Logger.hpp"
 
 
 Request::Request(std::string request) {
+    Logger logger(1, "log.txt");
+    logger.logging(2, "Start pars request");
     std::size_t separtor = request.find(" "); // находим первый сепаратор (пробел)
     this->header.insert(std::pair<std::string, std::string>("method",request.substr(0, separtor))); // берем метод и записываем в мап
     std::size_t next_separator = request.find(" ", separtor); // берем второй сепаратор
@@ -34,6 +37,7 @@ Request::Request(std::string request) {
             value = request.substr(separtor, next_separator - separtor);
         header.insert(std::pair<std::string, std::string>("secret", value)); // запсиываем в мап x-secret
     }
+    logger.logging(2, "End pars request");
 }
 
 Request::~Request() {}

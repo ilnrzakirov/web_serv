@@ -6,6 +6,9 @@
 #include "main.hpp"
 #include "Server.hpp"
 #include "Client.hpp"
+#include <sys/stat.h>
+#include <time.h>
+#include "CGI.hpp"
 
 
 
