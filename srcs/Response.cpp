@@ -6,6 +6,7 @@
 #include "../includes/Location.hpp"
 #include "../includes/utils.hpp"
 #include "../includes/Headers.hpp"
+#include "../includes/Logger.hpp"
 
 
 Response::Response(std::map<std::string, std::string> header, Server& server, Client* client) : header(header), server(server), client(client){
@@ -101,19 +102,24 @@ bool Response::is_autoindex(std::vector<Location>& locations, std::string check)
 }
 
 void    Response::build_response(void){ // собираем ответ
+    Logger logger(1, "log.txt");
     std::string tmp = this->header.find("uri")->second;
+    logger.logging(3, tmp);
     std::string method = "";
     std::pair<std::string, bool> check = this->is_location(this->server.getLocations(), this->header.find("uri")->second);
     std::pair<std::string, bool> method_allowed = is_method(this->server.getLocations(), this->header.find("uri")->second);
     this->autoidx = is_autoindex(this->server.getLocations(), this->header.find("uri")->second);
 
-    if (check.second == false)
+    logger.logging(1, to_string(check.second));
+    if (!check.second)
         uri = tmp.replace(0, 1, this->server.getParams().find("root")->second);
     else
         uri = check.first;
 
     if (this->header.find("method") != header.end() )
         method = this->header.find("method")->second;
+    logger.logging(1, "method: " + method);
+    logger.logging(1, "uri: " + this->uri);
     if (method_allowed.second && (method_allowed.first.find(method) == std::string::npos))
     {
         std::string body = "";
@@ -177,6 +183,7 @@ void    Response::method_head(){
 }
 
 void		Response::method_get(){
+    Logger logger(1, "log.txt");
     struct stat buffer;
     int status = 0;
     std::string body = "";
@@ -198,8 +205,13 @@ void		Response::method_get(){
         return ;
     }
     status = lstat(uri.c_str(), &buffer);
+    logger.logging(1, "Read " + uri);
+    if (status == -1) {
+        logger.logging(3, "[GET] Read uri status: " + to_string(status));
+    }
     if (status == -1){
         body = errorPage("404", "Page Not Found", this->error);
+        logger.logging(1, "body 404: " + body);
         Headers rsp_header;
         rsp_header.headersHTTP("404 Not Found", body.size(), uri, 0);
         this->response = rsp_header.getHeaderHTTP();
