@@ -96,6 +96,7 @@ void Handler::run_server() {
                     break ;
                 Request request((*it)->request); // инициализация рекваста (передаем то что получили с сокета)
                 logger.logging(1, "Received request from " + std::to_string((*it)->getFD()));
+                logger.logging(1, "request: " + (*it)->request);
                 Response response(request.getHeader(), (*servers)[server_count], *it); // инициализация респонса (передаем мап хедеров)
                 (*it)->getResponse() = response.get_response(); // внутри класса респонс пока что ничего не реализовано
                 (*it)->request.clear(); // очищяем реквест
@@ -111,8 +112,10 @@ void Handler::run_server() {
                     logger.logging(4, "Client disconnected, write fail");
                     break;
                 }
-                if ((unsigned long)ret < (*it)->getResponse().length()) // если отправили меньше чем длина респонса, то респонс срезаем
+                if ((unsigned long)ret < (*it)->getResponse().length()) {// если отправили меньше чем длина респонса, то респонс срезаем
                     (*it)->getResponse() = (*it)->getResponse().substr(ret);
+                    logger.logging(1,  (*it)->getResponse());
+                }
                 else{
                     FD_CLR((*it)->getFD(), &this->write_fds); // если отправили длину респонса то
                     (*it)->getResponse().clear(); // очищяем респонс и удаляем клиента
